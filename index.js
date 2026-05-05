@@ -16,10 +16,10 @@ async function sendMessage(text) {
 async function checkOrders() {
   console.log('CHECKING ORDERS...');
   try {
-    const xsrfMatch = (process.env.COOKIE || '').match(/__Host-XSRF-TOKEN=([^;]+)/);
+    const xsrfMatch = (COOKIE || '').match(/__Host-XSRF-TOKEN=([^;]+)/);
 const xsrf = xsrfMatch ? decodeURIComponent(xsrfMatch[1]) : '';
     const res = await axios.get(
-  'https://www.eldorado.gg/api/orders/me/seller/orders?orderState=PendingDelivery&displayFilter=DisplaySellingOrders',
+  'https://www.eldorado.gg/api/orders/me/seller/orders',
       {
     headers: {
   'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
@@ -36,20 +36,9 @@ const xsrf = xsrfMatch ? decodeURIComponent(xsrfMatch[1]) : '';
 );
 
     const orders = res.data.data || [];
-
-console.log('DATA RAW:', res.data);
-
+    
 console.log('TOTAL ORDERS:', orders.length);
-
-    console.log('XSRF:', xsrf);
-console.log('COOKIE LENGTH:', COOKIE.length);
-
-    console.log('XSRF:', xsrf);
-
-    console.log('COOKIE LENGTH:', COOKIE.length);
-
-console.log('XSRF:', xsrf || 'NOT FOUND');
-
+    
     const formattedOrders = orders.map(o => {
   const name = o.productName || o.title || 'Unknown';
   const price = o.price || o.totalPrice || 0;
