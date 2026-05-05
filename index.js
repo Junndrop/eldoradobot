@@ -24,7 +24,14 @@ async function checkOrders() {
     });
 
     const $ = cheerio.load(res.data);
-    const count = $('.order-row').length;
+    const orders = [];
+
+$('.order-row').each((i, el) => {
+  const title = $(el).find('.order-title').text().trim();
+  const price = $(el).find('.order-price').text().trim();
+
+  orders.push(`${title} | ${price}`);
+});
 
     if (lastCount === null) {
       lastCount = count;
