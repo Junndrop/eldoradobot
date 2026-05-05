@@ -46,6 +46,8 @@ console.log('COOKIE LENGTH:', COOKIE.length);
 
     console.log('XSRF:', xsrf);
 
+    console.log('COOKIE LENGTH:', COOKIE.length);
+
 console.log('XSRF:', xsrf || 'NOT FOUND');
 
     const formattedOrders = orders.map(o => {
