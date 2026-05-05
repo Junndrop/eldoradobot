@@ -29,7 +29,7 @@ async function checkOrders() {
 
     const orders = res.data.data || [];
 
-    console.log('TOTAL ELEMENT:', $('.order-row').length);
+    console.log('TOTAL ORDERS:', orders.length);
 
     const formattedOrders = orders.map(o => {
   return `${o.productName} | $${o.price} | ${o.orderState}`;
