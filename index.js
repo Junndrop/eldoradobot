@@ -19,10 +19,11 @@ async function checkOrders() {
   'https://www.eldorado.gg/api/orders/me/seller/orders?orderState=PendingDelivery&displayFilter=DisplaySellingOrders',
   {
     headers: {
-      'User-Agent': 'Mozilla/5.0',
-      'Accept': 'application/json',
-      'Cookie': COOKIE,
-      'Referer': 'https://www.eldorado.gg/dashboard/orders/sold'
+  'User-Agent': 'Mozilla/5.0',
+  'Accept': 'application/json',
+  'Cookie': COOKIE,
+  'Referer': 'https://www.eldorado.gg/dashboard/orders/sold',
+  'X-XSRF-TOKEN': process.env.COOKIE.match(/__Host-XSRF-TOKEN=([^;]+)/)?.[1]
     }
   }
 );
