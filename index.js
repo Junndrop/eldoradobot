@@ -48,7 +48,7 @@ const newOrders = formattedOrders.filter(o => !lastOrders.includes(o));
 
 if (newOrders.length > 0) {
   for (let o of newOrders) {
-    await sendMessage(`🔥 ORDER BARU\n${o}`);
+    await sendMessage(`🔥 ORDER BARU\n\n${o}`);
   }
 }
 
