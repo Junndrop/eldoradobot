@@ -32,7 +32,11 @@ async function checkOrders() {
     console.log('TOTAL ORDERS:', orders.length);
 
     const formattedOrders = orders.map(o => {
-  return `${o.productName} | $${o.price} | ${o.orderState}`;
+  const name = o.productName || o.title || 'Unknown';
+  const price = o.price || o.totalPrice || 0;
+  const status = o.orderState || o.status || 'Unknown';
+
+  return `${name} | $${price} | ${status}`;
 });
 
     if (lastOrders.length === 0) {
