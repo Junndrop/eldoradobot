@@ -16,18 +16,22 @@ async function sendMessage(text) {
 async function checkOrders() {
   console.log('CHECKING ORDERS...');
   try {
-    const xsrfMatch = (process.env.COOKIE || '').match(/XSRF-TOKEN=([^;]+)/);
+    const xsrfMatch = (process.env.COOKIE || '').match(/__Host-XSRF-TOKEN=([^;]+)/);
 const xsrf = xsrfMatch ? decodeURIComponent(xsrfMatch[1]) : '';
     const res = await axios.get(
   'https://www.eldorado.gg/api/orders/me/seller/orders?orderState=PendingDelivery&displayFilter=DisplaySellingOrders',
       {
     headers: {
-  'User-Agent': 'Mozilla/5.0',
+  'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
   'Accept': 'application/json',
+  'Accept-Language': 'en-US,en;q=0.9',
+  'Content-Type': 'application/json',
+  'Connection': 'keep-alive',
   'Cookie': COOKIE,
   'Referer': 'https://www.eldorado.gg/dashboard/orders/sold',
+  'Origin': 'https://www.eldorado.gg',
   'X-XSRF-TOKEN': xsrf
-    }
+}
   }
 );
 
@@ -36,6 +40,11 @@ const xsrf = xsrfMatch ? decodeURIComponent(xsrfMatch[1]) : '';
 console.log('DATA RAW:', res.data);
 
 console.log('TOTAL ORDERS:', orders.length);
+
+    console.log('XSRF:', xsrf);
+console.log('COOKIE LENGTH:', COOKIE.length);
+
+    console.log('XSRF:', xsrf);
 
 console.log('XSRF:', xsrf || 'NOT FOUND');
 
