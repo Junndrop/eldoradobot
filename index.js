@@ -16,33 +16,32 @@ async function sendMessage(text) {
 
 async function checkOrders() {
   try {
-    const res = await axios.get('https://www.eldorado.gg/dashboard/orders/sold', {
-  headers: {
-    Cookie: COOKIE,
-    'User-Agent': 'Mozilla/5.0',
-    'Accept': 'text/html',
-    'Referer': 'https://www.eldorado.gg/'
+    const res = await axios.get(
+  'https://www.eldorado.gg/api/orders/me/seller/orders?orderState=PendingDelivery&displayFilter=DisplaySellingOrders',
+  {
+    headers: {
+      'User-Agent': 'Mozilla/5.0',
+      'Accept': 'application/json',
+      'Cookie': COOKIE,
+      'Referer': 'https://www.eldorado.gg/dashboard/orders/sold'
+    }
   }
-});
+);
 
-    const $ = cheerio.load(res.data);
-    const orders = [];
+    const orders = res.data.data || [];
 
     console.log('TOTAL ELEMENT:', $('.order-row').length);
 
-$('.order-row').each((i, el) => {
-  const title = $(el).find('.order-title').text().trim();
-  const price = $(el).find('.order-price').text().trim();
-
-  orders.push(`${title} | ${price}`);
+    const formattedOrders = orders.map(o => {
+  return `${o.productName} | $${o.price} | ${o.orderState}`;
 });
 
     if (lastOrders.length === 0) {
-  lastOrders = orders;
+  lastOrders = formattedOrders;
   return;
-    }
+}
 
-    const newOrders = orders.filter(o => !lastOrders.includes(o));
+const newOrders = formattedOrders.filter(o => !lastOrders.includes(o));
 
 if (newOrders.length > 0) {
   for (let o of newOrders) {
@@ -50,7 +49,7 @@ if (newOrders.length > 0) {
   }
 }
 
-    lastOrders = orders;
+lastOrders = formattedOrders;
 
   } catch (err) {
     console.log('Error:', err.message);
