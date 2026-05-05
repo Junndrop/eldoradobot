@@ -26,6 +26,8 @@ async function checkOrders() {
     const $ = cheerio.load(res.data);
     const orders = [];
 
+    console.log('TOTAL ELEMENT:', $('.order-row').length);
+
 $('.order-row').each((i, el) => {
   const title = $(el).find('.order-title').text().trim();
   const price = $(el).find('.order-price').text().trim();
