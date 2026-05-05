@@ -43,3 +43,5 @@ async function checkOrders() {
 }
 
 setInterval(checkOrders, 60000);
+
+sendMessage('Bot aktif 🚀');
