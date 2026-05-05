@@ -14,23 +14,30 @@ async function sendMessage(text) {
 }
 
 async function checkOrders() {
+  console.log('CHECKING ORDERS...');
   try {
+    const xsrfMatch = (process.env.COOKIE || '').match(/XSRF-TOKEN=([^;]+)/);
+const xsrf = xsrfMatch ? decodeURIComponent(xsrfMatch[1]) : '';
     const res = await axios.get(
   'https://www.eldorado.gg/api/orders/me/seller/orders?orderState=PendingDelivery&displayFilter=DisplaySellingOrders',
-  {
+      {
     headers: {
   'User-Agent': 'Mozilla/5.0',
   'Accept': 'application/json',
   'Cookie': COOKIE,
   'Referer': 'https://www.eldorado.gg/dashboard/orders/sold',
-  'X-XSRF-TOKEN': process.env.COOKIE.match(/__Host-XSRF-TOKEN=([^;]+)/)?.[1]
+  'X-XSRF-TOKEN': xsrf
     }
   }
 );
 
     const orders = res.data.data || [];
 
-    console.log('TOTAL ORDERS:', orders.length);
+console.log('DATA RAW:', res.data);
+
+console.log('TOTAL ORDERS:', orders.length);
+
+console.log('XSRF:', xsrf || 'NOT FOUND');
 
     const formattedOrders = orders.map(o => {
   const name = o.productName || o.title || 'Unknown';
@@ -61,5 +68,7 @@ lastOrders = formattedOrders;
 }
 
 setInterval(checkOrders, 60000);
+
+checkOrders();
 
 sendMessage('Bot aktif 🚀');
