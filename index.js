@@ -7,8 +7,6 @@ const TOKEN = process.env.BOT_TOKEN;
 const CHAT_ID = process.env.CHAT_ID;
 const COOKIE = process.env.COOKIE;
 
-let lastCount = null;
-
 async function sendMessage(text) {
   await axios.post(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
     chat_id: CHAT_ID,
