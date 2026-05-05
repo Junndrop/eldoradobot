@@ -16,12 +16,14 @@ async function sendMessage(text) {
 
 async function checkOrders() {
   try {
-    const res = await axios.get('https://www.eldorado.gg/dashboard/orders/sold?orderState=PendingDelivery&displayFilter=DisplaySellingOrders', {
-      headers: {
-        Cookie: COOKIE,
-        'User-Agent': 'Mozilla/5.0'
-      }
-    });
+    const res = await axios.get('https://www.eldorado.gg/dashboard/orders/sold', {
+  headers: {
+    Cookie: COOKIE,
+    'User-Agent': 'Mozilla/5.0',
+    'Accept': 'text/html',
+    'Referer': 'https://www.eldorado.gg/'
+  }
+});
 
     const $ = cheerio.load(res.data);
     const orders = [];
