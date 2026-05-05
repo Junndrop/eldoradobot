@@ -35,16 +35,20 @@ $('.order-row').each((i, el) => {
   orders.push(`${title} | ${price}`);
 });
 
-    if (lastCount === null) {
-      lastCount = count;
-      return;
+    if (lastOrders.length === 0) {
+  lastOrders = orders;
+  return;
     }
 
-    if (count > lastCount) {
-      await sendMessage(`🔥 ORDER BARU! Total: ${count}`);
-    }
+    const newOrders = orders.filter(o => !lastOrders.includes(o));
 
-    lastCount = count;
+if (newOrders.length > 0) {
+  for (let o of newOrders) {
+    await sendMessage(`🔥 ORDER BARU\n${o}`);
+  }
+}
+
+    lastOrders = orders;
 
   } catch (err) {
     console.log('Error:', err.message);
